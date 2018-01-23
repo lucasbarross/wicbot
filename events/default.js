@@ -29,8 +29,9 @@ function findCmd (alias){
 
 client.on("message", (message) => {
     if (message.author.bot) return;
-    var prefix = message.content.split(" ")[0];
-    var cmdAlias = message.content.split(" ")[1];
-    var args = message.content.slice(config.prefix.length).split(" ");
+    var content = message.content.split(" ");
+    var prefix = content[0];
+    var cmdAlias = content[1];
+    var args = content.slice(1);
     if (prefix == config.prefix) findCmd(cmdAlias).then((cmd) => cmd.run(client, message, args)).catch((err) => console.log(err.message));
 })
