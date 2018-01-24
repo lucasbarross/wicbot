@@ -33,5 +33,9 @@ client.on("message", (message) => {
     var prefix = content[0];
     var cmdAlias = content[1];
     var args = content.slice(1);
-    if (prefix == config.prefix) findCmd(cmdAlias).then((cmd) => cmd.run(client, message, args)).catch((err) => console.log(err.message));
+    if (prefix == config.prefix){
+        findCmd(cmdAlias).then((cmd) => cmd.run(client, message, args)).catch((err) => console.log(err.message))
+    } else if (client.games.get(message.author.id)){
+        client.games.get(message.author.id).registerAnswer(message.content);
+    }
 })

@@ -6,7 +6,7 @@ var app = require('express')(),
     fs = require("fs-extra"),
     client = new Discord.Client();
 
-client.instances = new Discord.Collection();
+client.games = new Discord.Collection();
 
 //SETUP COMMANDS
 client.commands = new Discord.Collection();
