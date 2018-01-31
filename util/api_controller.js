@@ -1,4 +1,5 @@
 var axios = require("axios");
+var config = require("../config")
 var authorization;
 axios.defaults.baseURL = process.env.API_URL;
 
@@ -62,8 +63,8 @@ async function getToken(){
     return new Promise((resolve, reject) => {
         axios.post('/oauth/token', {
             grant_type: "client_credentials",
-            client_id: process.env.UID,
-            client_secret: process.env.SECRET
+            client_id: config.client.secret,
+            client_secret: config.client.uid
         })
         .then((response) => {
             authorization = response.data
