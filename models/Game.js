@@ -23,11 +23,13 @@ module.exports = class Game {
 
     getRandomChampion(){
         var index = Math.floor(Math.random()*this.championsAvailable.length);
+        this.championIndex = index;
         return this.championsAvailable[index];
     }
 
     start() {
         api.getChampions(this.user.id).then((response) => {
+            this.hinted = false;
             this.championsAvailable = response.data;
             this.currentChampion = this.getRandomChampion();
             messenger.championMessage(this.channel, this.user, this.currentChampion.representation).then((msg) => { this.message = msg }).catch(err => console.log(err.message)); 
@@ -35,18 +37,25 @@ module.exports = class Game {
     }
 
     nextChampion(){
-        api.getChampions(this.user.id).then((response) => {
-            this.championsAvailable = response.data;
-            this.currentChampion = this.getRandomChampion();
-            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log(err.message)); 
-        }).catch(err => console.log(err.message)); 
+        this.hinted = false;
+        this.currentChampion = this.getRandomChampion();
+        messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log(err.message));  
     }
 
     showHint(){
-
+        this.hinted = true;
+        messenger.hintMessage(this.channel, this.user, this.currentChampion.name).catch((err) => console.log(err.message));
     }
 
-    registerAnswer(){
-        this.nextChampion();
+    registerAnswer(hunch){
+        var isCorrect = hunch.toLowerCase() == this.currentChampion.name;
+        api.postAnswer(user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
+            if(isCorrect){
+                this.championsAvailable.slice(this.championIndex, 1);
+                this.nextChampion()
+            } else {
+                //
+            }
+        }).catch((err) => console.log(err.message));
     }
 }
