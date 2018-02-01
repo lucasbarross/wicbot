@@ -4,5 +4,6 @@ module.exports = {
         secret: process.env.SECRET,
         uid: process.env.UID
     },
+    API_URL: process.env.API_URL,
     prefix: "?w"
 }
