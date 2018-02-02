@@ -9,6 +9,7 @@ module.exports.getChampions = async (userID) => {
         return axios.get(`/api/v1/champions?user_id=${userID}`);
     } catch(err){
         console.log(err.message);
+        throw err;
     }
 }
 
@@ -18,6 +19,7 @@ module.exports.getPlayerStats = async (userID) => {
         return axios.get(`/api/v1/status?user_id=${userID}`); 
     } catch (err) {
         console.log(err.message);
+        throw err;
     }
 }
 
@@ -27,6 +29,7 @@ module.exports.getText = async (hash, lang) => {
         return axios.get(`/api/v1/localization?hash=${hash}&lang=${lang}`);  
     } catch (err) {
         console.log(err.message);
+        throw err;
     }
 }
 
@@ -41,6 +44,7 @@ module.exports.postAnswer = async (userID, championID, correct, hinted) => {
         });
     } catch(err){
         console.log(err.message);
+        throw err;
     }
 }
 
