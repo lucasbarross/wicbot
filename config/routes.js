@@ -1,5 +1,5 @@
 var express = require("express"),
-    client = require("./client.js"),
+    client = require("../client.js"),
     config = require("./config.js")
     router = express.Router();
 

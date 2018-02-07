@@ -4,15 +4,16 @@ var client = require("../client");
 
 module.exports = class Game {
     
-    //channel
-    //guild
-    //user
-    //currentChampion
-    //championIndex (currentChampion index on championsAvailable array)
-    //championsAvailable
-    //message
-    //hinted
-
+    /**
+    * @param channel //Channel the game is on
+    * @param guild //Guild the game is on
+    * @param user //User playing the game
+    * @param currentChampion //Current champion player is on
+    * @param championIndex (currentChampion index on championsAvailable array)
+    * @param championsAvailable //All champions available to the player
+    * @param message //Reference to the bot message so we can edit it later to pass to the next champion
+    * @param hinted //If the player asked for a hint in the current champion
+    */
 
     constructor(message) {
         this.channel = message.channel;
@@ -66,26 +67,23 @@ module.exports = class Game {
         .then((msg) => { return msg.delete(15000) })
         .catch((err) => console.log(err.message));
     }
+    
+    timeout(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     registerAnswer(hunch){
-        var isCorrect = hunch.toLowerCase() == this.currentChampion.name;
-        api.postAnswer(user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
+        var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
+        hunch.delete(0).catch((err) => console.log(err));
+        api.postAnswer(this.user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
+            return messenger.feedbackMessage(this.channel, this.user, this.message, isCorrect)
+        }).then((fbmsg) => {
+            return this.timeout(5000);
+        }).then(() => {
             if(isCorrect){
-                this.championsAvailable.slice(this.championIndex, 1);
-                messenger.feedbackMessage(this.channel, this.user, this.message, true)
-                .then(() => 
-                {
-                    setTimeout(function(){
-                        this.nextChampion();
-                    }, 500);
-                });
+                return this.nextChampion()
             } else {
-                messenger.feedbackMessage(this.channel, this.user, this.message, false)
-                .then((message) => {
-                    setTimeout(function(){ 
-                        messenger.editChampionMessage(this.user, this.message, this.currentChampion) 
-                    }, 500);
-                });
+                return messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation)
             }
         }).catch((err) => console.log(err.message));
     }

@@ -1,11 +1,10 @@
-var app = require('express')(),
+var webapp = require('./config/express'),
     http = require('http'),    
     Discord = require('discord.js'),
-    routes = require("./routes.js"),
-    config = require("./config.js"),
+    config = require("./config/config.js"),
     fs = require("fs-extra"),
     client = new Discord.Client();
-
+    
 client.games = new Discord.Collection();
 
 //SETUP COMMANDS
@@ -25,17 +24,6 @@ fs.readdir("./commands/")
 
 client.login(config.token);
 module.exports = client;
-require("./events/default.js");
 
-//EXPRESS
-app.use(routes);
-app.listen(process.env.PORT || 3000, function(){
-    console.log("Express connected");
-});
-//
-
-//PING
-// setInterval(() => {
-//     http.get(``);
-// }, 280000);
-//
+require('./events/default');
+require('./events/message');

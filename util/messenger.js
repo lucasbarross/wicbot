@@ -56,6 +56,7 @@ module.exports.playerStatsMessage = async (channel, user) => {
         });
     } catch(err){
         console.log(err.message);
+        throw err;
     }
 }
 
@@ -71,6 +72,7 @@ module.exports.helpMessage = async (channel, user) => {
         });
     }catch(err){
         console.log(err.message);
+        throw err;
     }
 }
 
@@ -90,17 +92,18 @@ module.exports.hintMessage = async (channel, user, championName) => {
         });
     } catch(err){
         console.log(err.message);
+        throw err;
     }
 }
 
-module.exports.editChampionMessage = async (user, message, nextChampion) => {
+module.exports.editChampionMessage = async (user, message, nextRepresentation) => {
     return message.edit({embed: {
         color: 3447003,
         author: {
           name: user.username,
           icon_url: user.avatarURL
         },
-        description: nextChampion
+        description: nextRepresentation
       }
     });
 }
@@ -113,15 +116,16 @@ module.exports.feedbackMessage = async (channel, user, message, correct) => {
         let title = await api.getText(query+"Text", user.lang);
         return message.edit({embed: {
             color: color,
-            title: title,
+            title: title.data.text,
             author: {
                 name: user.username,
                 icon_url: user.avatarURL
             },
-            file: file
+            image: { url: file }
         }
         });
     }catch(err){
         console.log(err.message);
+        return Promise.reject(err);
     }
 }

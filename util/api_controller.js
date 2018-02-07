@@ -1,5 +1,5 @@
 var axios = require("axios");
-var config = require("../config")
+var config = require("../config/config.js")
 var authorization;
 axios.defaults.baseURL = process.env.API_URL;
 
@@ -9,7 +9,7 @@ module.exports.getChampions = async (userID) => {
         return axios.get(`/api/v1/champions?user_id=${userID}`);
     } catch(err){
         console.log(err.message);
-        throw err;
+        return Promise.reject(err);
     }
 }
 
@@ -19,17 +19,17 @@ module.exports.getPlayerStats = async (userID) => {
         return axios.get(`/api/v1/status?user_id=${userID}`); 
     } catch (err) {
         console.log(err.message);
-        throw err;
+        return Promise.reject(err);
     }
 }
 
 module.exports.getText = async (hash, lang) => {
     try{
         await checkToken();
-        return axios.get(`/api/v1/localization?hash=${hash}&lang=${lang}`);  
+        return axios.get(`/api/v1/localizations?hash=${hash}&lang=${lang}`);  
     } catch (err) {
         console.log(err.message);
-        throw err;
+        return Promise.reject(err);
     }
 }
 
@@ -44,7 +44,7 @@ module.exports.postAnswer = async (userID, championID, correct, hinted) => {
         });
     } catch(err){
         console.log(err.message);
-        throw err;
+        return Promise.reject(err);
     }
 }
 
@@ -55,7 +55,7 @@ async function checkToken(){
                 authorization = response.data
                 axios.defaults.headers.common['Authorization'] = "Bearer " + authorization.access_token;
                 resolve();
-            }).catch((err) => console.log(err))
+            }).catch((err) => reject(new Error("Couldn't get authorization token.")))
         } else {
             resolve();
         }
