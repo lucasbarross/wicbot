@@ -43,7 +43,6 @@ module.exports.postAnswer = async (userID, championID, correct, hinted) => {
             hinted: hinted
         });
     } catch(err){
-        console.log(err.message);
         return Promise.reject(err);
     }
 }

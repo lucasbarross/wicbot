@@ -23,7 +23,7 @@ var api = require("./api_controller");
 // DARK_NAVY: 2899536
 
 module.exports.championMessage = async (channel, user, representation) => {
-    return channel.send({embed: {
+    return channel.send(user.toString(), {embed: {
         color: 8359053,
         author: {
           name: user.username,
@@ -42,7 +42,7 @@ module.exports.playerStatsMessage = async (channel, user) => {
         for(var i = 0; i < 3; i++){
             text = text.replace(`%${i}$d`, statsArray[i])
         }
-        return channel.send(
+        return channel.send( user.toString(),
             {
                 embed: 
                 {
@@ -81,7 +81,7 @@ module.exports.hintMessage = async (channel, user, championName) => {
     try{
         var hint = await api.getText(championName+"Text", user.lang);
         var text = await api.getText("hintTitle", user.lang);
-        return channel.send({embed: {
+        return channel.send(user.toString(), {embed: {
             color: 2123412,
             author: {
             name: text + ' ' + user.username,
@@ -97,7 +97,7 @@ module.exports.hintMessage = async (channel, user, championName) => {
 }
 
 module.exports.editChampionMessage = async (user, message, nextRepresentation) => {
-    return message.edit({embed: {
+    return message.edit(user.toString(), {embed: {
         color: 3447003,
         author: {
           name: user.username,
@@ -113,10 +113,8 @@ module.exports.feedbackMessage = async (channel, user, message, correct) => {
         let query = correct ? "correct" : "incorrect"
         let color = correct ? 3066993 : 15158332;
         let file = correct ? "https://image.flaticon.com/icons/png/128/443/443138.png" : "https://en.vmm.be/stay-in-touch/icons/red-tick.png/@@images/62e4cd3d-46f0-42c8-b245-48b457cfe51a.png";
-        let title = await api.getText(query+"Text", user.lang);
-        return message.edit({embed: {
+        return message.edit(user.toString(), {embed: {
             color: color,
-            title: title.data.text,
             author: {
                 name: user.username,
                 icon_url: user.avatarURL

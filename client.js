@@ -22,7 +22,7 @@ fs.readdir("./commands/")
 .catch((err) => { console.log(err) })
 //
 
-client.login(config.token);
+client.login(config.token).catch((err) => console.log(err));
 module.exports = client;
 
 require('./events/default');

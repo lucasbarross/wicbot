@@ -13,12 +13,14 @@ module.exports = class Game {
     * @param championsAvailable //All champions available to the player
     * @param message //Reference to the bot message so we can edit it later to pass to the next champion
     * @param hinted //If the player asked for a hint in the current champion
+    * @param guessEnabled //Enables player to take a guess (stops spamming and therefore bugs)
     */
 
     constructor(message) {
         this.channel = message.channel;
         this.guild = message.guild;
         this.user = message.author;
+        this.guessEnabled = true;
         if(this.guild.region == "brazil"){
             this.user.lang = "br";
         } else {
@@ -75,11 +77,15 @@ module.exports = class Game {
     registerAnswer(hunch){
         var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
         hunch.delete(0).catch((err) => console.log(err));
+        if (!this.guessEnabled)
+            return;
+        this.guessEnabled = false;
         api.postAnswer(this.user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
             return messenger.feedbackMessage(this.channel, this.user, this.message, isCorrect)
         }).then((fbmsg) => {
-            return this.timeout(5000);
+            return this.timeout(500);
         }).then(() => {
+            this.guessEnabled = true;
             if(isCorrect){
                 return this.nextChampion()
             } else {
