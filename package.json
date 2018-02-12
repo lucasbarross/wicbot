@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "League of Legends' discord bot.",
   "main": "app.js",
+  "engines":{"node": "0.8.x"},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

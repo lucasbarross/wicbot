@@ -1,15 +1,9 @@
-var webapp = require('express')(),
+var webapp = require('./config/express'),
     Discord = require('discord.js'),
     config = require("./config/constants.js"),
     fs = require("fs-extra"),
     client = new Discord.Client();
-    routes = require("./config/routes.js");
-
-webapp.use(routes);
-webapp.listen(process.env.PORT || 3000, function(){
-    console.log("Express connected");
-});
-
+    
 client.games = new Discord.Collection();
 
 //SETUP COMMANDS
