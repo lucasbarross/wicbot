@@ -1,6 +1,6 @@
 var express = require("express"),
     client = require("../client.js"),
-    config = require("./config.js")
+    config = require("./constants.js")
     router = express.Router();
 
 router.get("/", function(req, res){

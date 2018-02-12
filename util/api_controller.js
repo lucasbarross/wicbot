@@ -1,5 +1,5 @@
 var axios = require("axios");
-var config = require("../config/config.js")
+var config = require("../config/constants.js")
 var authorization;
 axios.defaults.baseURL = process.env.API_URL;
 
@@ -8,17 +8,24 @@ module.exports.getChampions = async (userID) => {
         await checkToken();
         return axios.get(`/api/v1/champions?user_id=${userID}`);
     } catch(err){
-        console.log(err.message);
         return Promise.reject(err);
     }
 }
 
-module.exports.getPlayerStats = async (userID) => {
+module.exports.resetStats = async (userID) => {
     try{
         await checkToken();
-        return axios.get(`/api/v1/status?user_id=${userID}`); 
+        return axios.delete(`/api/v1/answers/reset?user_id=${userID}`); 
     } catch (err) {
-        console.log(err.message);
+        return Promise.reject(err);
+    }
+}
+
+module.exports.getPlayerStats = async (userID, lang) => {
+    try{
+        await checkToken();
+        return axios.get(`/api/v1/status?user_id=${userID}&lang=${lang}`); 
+    } catch (err) {
         return Promise.reject(err);
     }
 }
@@ -28,7 +35,16 @@ module.exports.getText = async (hash, lang) => {
         await checkToken();
         return axios.get(`/api/v1/localizations?hash=${hash}&lang=${lang}`);  
     } catch (err) {
-        console.log(err.message);
+        return Promise.reject(err);
+    }
+}
+
+
+module.exports.getHint = async (playerID, hash, lang) => {
+    try{
+        await checkToken();
+        return axios.get(`/api/v1/localizations/hint?hash=${hash}&lang=${lang}&player_id=${playerID}`);  
+    } catch (err) {
         return Promise.reject(err);
     }
 }

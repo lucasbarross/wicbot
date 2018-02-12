@@ -1,5 +1,5 @@
 var client = require("../client.js");
-var config = require("../config/config.js");
+var config = require("../config/constants.js");
 
 function findCmd (alias){
     return new Promise((resolve, reject) => {

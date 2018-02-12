@@ -5,7 +5,6 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send("You are already playing!");
     } else {
         let game = new Game(message);
-        bot.games.set(message.author.id, game)
         game.start();
     }
 }

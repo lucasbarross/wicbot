@@ -1,30 +1,32 @@
 var api = require("./api_controller");
 
-// DEFAULT: 0,
-// AQUA: 1752220,
-// GREEN: 3066993,
-// BLUE: 3447003,
-// PURPLE: 10181046,
-// GOLD: 15844367,
-// ORANGE: 15105570,
-// RED: 15158332,
-// GREY: 9807270,
-// DARKER_GREY: 8359053,
-// NAVY: 3426654,
-// DARK_AQUA: 1146986,
-// DARK_GREEN: 2067276,
-// DARK_BLUE: 2123412,
-// DARK_PURPLE: 7419530,
-// DARK_GOLD: 12745742,
-// DARK_ORANGE: 11027200,
-// DARK_RED: 10038562,
-// DARK_GREY: 9936031,
-// LIGHT_GREY: 12370112,
-// DARK_NAVY: 2899536
+const colors = {
+    DEFAULT: 0,
+    AQUA: 1752220,
+    GREEN: 3066993,
+    BLUE: 3447003,
+    PURPLE: 10181046,
+    GOLD: 15844367,
+    ORANGE: 15105570,
+    RED: 15158332,
+    GREY: 9807270,
+    DARKER_GREY: 8359053,
+    NAVY: 3426654,
+    DARK_AQUA: 1146986,
+    DARK_GREEN: 2067276,
+    DARK_BLUE: 2123412,
+    DARK_PURPLE: 7419530,
+    DARK_GOLD: 12745742,
+    DARK_ORANGE: 11027200,
+    DARK_RED: 10038562,
+    DARK_GREY: 9936031,
+    LIGHT_GREY: 12370112,
+    DARK_NAVY: 2899536
+}
 
 module.exports.championMessage = async (channel, user, representation) => {
     return channel.send(user.toString(), {embed: {
-        color: 8359053,
+        color: colors.LIGHT_GREY,
         author: {
           name: user.username,
           icon_url: user.avatarURL
@@ -37,21 +39,22 @@ module.exports.championMessage = async (channel, user, representation) => {
 module.exports.playerStatsMessage = async (channel, user) => {
     try{
         var stats = await api.getPlayerStats(user.id);
-        var statsArray = [stats.total_tries, stats.status.count, stats.remaining]
+        var statsArray = [stats.data.total_tries, stats.data.status.count, stats.data.remaining]
         var text = await api.getText("startText", user.lang)
-        for(var i = 0; i < 3; i++){
-            text = text.replace(`%${i}$d`, statsArray[i])
+        var str = text.data.text;
+        for(var i = 1; i < 4; i++){
+            str = str.replace('%'+ i +'$d', statsArray[i-1])
         }
         return channel.send( user.toString(),
             {
                 embed: 
                 {
-                    color: 3066993,
+                    color: colors.BLUE,
                     author: {
-                        name: user.username,
+                        name: user.username + " stats",
                         icon_url: user.avatarURL
                 },
-                description: text
+                description: str
             }
         });
     } catch(err){
@@ -64,11 +67,12 @@ module.exports.helpMessage = async (channel, user) => {
     try{
         var title = await api.getText("helpTitle", user.lang);
         var body = await api.getText("helpText", user.lang);
+        console.log(body.data);
         return channel.send({embed: {
-            color: 15105570,
-            title: title,
-            description: body
-        }
+            color: colors.GOLD,
+            title: title.data.text,
+            description: body.data.text.replace(/\\n/g, "\n")
+         }
         });
     }catch(err){
         console.log(err.message);
@@ -77,19 +81,23 @@ module.exports.helpMessage = async (channel, user) => {
 }
 
 
-module.exports.hintMessage = async (channel, user, championName) => {
+module.exports.hintMessage = async (message, channel, user, championName) => {
     try{
-        var hint = await api.getText(championName+"Text", user.lang);
-        var text = await api.getText("hintTitle", user.lang);
-        return channel.send(user.toString(), {embed: {
-            color: 2123412,
+        var hint = await api.getHint(user.id, championName+"Text", user.lang);
+        var title = await api.getText("hintTitle", user.lang);
+        return message.edit({embed: {
+            color: colors.GREY,
             author: {
-            name: text + ' ' + user.username,
-            icon_url: user.avatarURL
+                name: user.username,
+                icon_url: user.avatarURL
             },
-            description: hint
-        }
-        });
+            description: message.embeds[0].description,
+            fields: [{
+                name: title.data.text,
+                value: hint.data.text
+            }]
+        }}
+        );
     } catch(err){
         console.log(err.message);
         throw err;
@@ -98,7 +106,7 @@ module.exports.hintMessage = async (channel, user, championName) => {
 
 module.exports.editChampionMessage = async (user, message, nextRepresentation) => {
     return message.edit(user.toString(), {embed: {
-        color: 3447003,
+        color: colors.LIGHT_GREY,
         author: {
           name: user.username,
           icon_url: user.avatarURL
@@ -112,7 +120,7 @@ module.exports.feedbackMessage = async (channel, user, message, correct) => {
     try{
         let query = correct ? "correct" : "incorrect"
         let color = correct ? 3066993 : 15158332;
-        let file = correct ? "https://image.flaticon.com/icons/png/128/443/443138.png" : "https://en.vmm.be/stay-in-touch/icons/red-tick.png/@@images/62e4cd3d-46f0-42c8-b245-48b457cfe51a.png";
+        let file = correct ? "https://lh4.googleusercontent.com/kzlUjCHDBDii0FLv7tnLRkLExluhJelaARpPqpbPP9eAY-2NdkfOb3bP_lH1pfGrrpIzzSQ0Jl2MSQ_Ti4N6=w1920-h925" : "https://lh4.googleusercontent.com/eNeW7cAtGmPYvF_epT_wblVpH-Rm1rTz4ZUfCm9VXQLlDq5W3d3_9MTZMIfGDWLN95rqnPBN9zWSUYHLJufQ=w1920-h925";
         return message.edit(user.toString(), {embed: {
             color: color,
             author: {

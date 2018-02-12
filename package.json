@@ -19,6 +19,7 @@
   "homepage": "https://github.com/lucasbarross/wicbot#readme",
   "dependencies": {
     "axios": "^0.17.1",
+    "bluebird": "^3.5.1",
     "discord.js": "^11.2.1",
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
