@@ -27,3 +27,4 @@ module.exports = client;
 
 require('./events/default');
 require('./events/message');
+require('./util/ping');
