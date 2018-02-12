@@ -1,5 +1,4 @@
 var webapp = require('./config/express'),
-    http = require('http'),    
     Discord = require('discord.js'),
     config = require("./config/constants.js"),
     fs = require("fs-extra"),

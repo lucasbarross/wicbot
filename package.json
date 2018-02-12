@@ -22,7 +22,6 @@
     "discord.js": "^11.2.1",
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
-    "mysql": "^2.15.0",
-    "websocket": "^1.0.25"
+    "mysql": "^2.15.0"
   }
 }

@@ -1,5 +1,6 @@
 var config = require("../config/constants");
-//PING to keep bot alive
+var axios = require("axios");
 setInterval(() => {
-    http.get(config.BOT_URL);
+    console.log("Ping");
+    axios.get(config.BOT_URL).catch((err) => console.log(err));
 }, 280000);
