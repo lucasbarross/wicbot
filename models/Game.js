@@ -1,6 +1,6 @@
 var api = require("../util/api_controller");
 var messenger = require("../util/messenger");
-var client = require("../client");
+var client = require("../server");
 var Promise = require("bluebird");
 
 module.exports = class Game {

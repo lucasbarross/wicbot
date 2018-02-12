@@ -1,4 +1,4 @@
-var client = require("../client.js");
+var client = require("../server.js");
 var config = require("../config/constants.js");
 
 function findCmd (alias){
