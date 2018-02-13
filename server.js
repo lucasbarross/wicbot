@@ -3,7 +3,7 @@ var webapp = require('./config/express'),
     config = require("./config/constants.js"),
     fs = require("fs-extra"),
     client = new Discord.Client();
-    
+
 client.games = new Discord.Collection();
 
 //SETUP COMMANDS
@@ -22,6 +22,7 @@ fs.readdir("./commands/")
 //
 
 client.login(config.token).catch((err) => console.log(err));
+
 module.exports = client;
 
 require('./events/default');
