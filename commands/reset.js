@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
     .then((line) => { 
         return message.channel.send(message.author.toString() + ', ' + line.data.text)
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.message));
 }
 
 module.exports.config = {

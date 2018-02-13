@@ -2,6 +2,7 @@ var axios = require("axios");
 var config = require("../config/constants.js")
 var authorization;
 axios.defaults.baseURL = process.env.API_URL;
+axios.defaults.timeout = 2500;
 
 module.exports.getChampions = async (userID) => {
     try {
