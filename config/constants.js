@@ -1,5 +1,5 @@
 module.exports = {
-    token: process.env.TOKEN || "MzI5NzIwNTU4MjE4Mzc5MjY0.DUgvkQ.ig7_dpC06oif1xhvcrdjwORTGdw",
+    token: process.env.TOKEN,
     client: {
         secret: process.env.SECRET,
         uid: process.env.CLIENT_ID
