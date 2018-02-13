@@ -13,7 +13,7 @@ router.post("/", function(req, res){
     let promises = [];
     if(user == config.client.uid && secret == config.client.secret){
         require("../server").guilds.forEach((guild) => { //for each guild the bot is in
-            let defaultChannel = null;
+            let defaultChannel = "";
             guild.channels.forEach((channel) => {
                   if(channel.type == "text" && defaultChannel == "") {
                     if(channel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
@@ -21,11 +21,11 @@ router.post("/", function(req, res){
                     }
                   }
                 })
-                if(defaultChannel){
-                    promises.push(defaultChannel.send(msg).catch((err) => console.log(err.message))); //send it to whatever channel the bot has permissions to send on
-                }
-            })
-        }    
+            if(defaultChannel != ""){
+                promises.push(defaultChannel.send(msg).catch((err) => console.log(err.message))); //send it to whatever channel the bot has permissions to send on
+            }
+        })
+    }    
 
     Promise.all(promises).then(() => res.send("Sent."));
 })
