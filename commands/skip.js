@@ -5,6 +5,7 @@ module.exports.run = async (bot, message, args) => {
     if(game){
         game.skipChampion();
     }
+    message.delete().catch((err) => console.log(err.message));
 }
 
 module.exports.config = {

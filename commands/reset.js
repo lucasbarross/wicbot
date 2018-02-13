@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
         return api.getText("resetText", lang)
     })
     .then((line) => { 
-        return message.channel.send(line.data.text)
+        return message.channel.send(message.author.toString() + ', ' + line.data.text)
     })
     .catch((err) => console.log(err));
 }

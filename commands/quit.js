@@ -5,6 +5,7 @@ module.exports.run = async (bot, message, args) => {
     if(game){
         bot.games.delete(message.author.id)
         game.message.delete().catch(err => console.log(err.message));
+        message.delete().catch((err) => console.log(err.message));
     }
 }
 

@@ -23,7 +23,6 @@ router.post("/", function(req, res){
                 })
                 promises.push(defaultChannel.send(msg).catch((err) => console.log(err.message))); //send it to whatever channel the bot has permissions to send on
             })
-            //promises.push(guild.channels[0].send(msg).catch((err) => console.log(err.message)));
         }    
 
     Promise.all(promises).then(() => res.send("Sent."));

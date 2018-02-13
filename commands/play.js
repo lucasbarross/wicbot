@@ -6,6 +6,7 @@ module.exports.run = async (bot, message, args) => {
     } else {
         let game = new Game(message);
         game.start();
+        message.delete().catch((err) => console.log(err.message));
     }
 }
 
