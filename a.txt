@@ -2,10 +2,4 @@
 `?w sair` (or) `?w q` - encerra um jogo.
 `?w ajuda` (or) `?w h` - reabre esse painel.
 
-`?w play` (or) `?w p` - starts a game.\n
-`?w quit` (or) `?w q` - finishes a game.\n
-`?w help` (or) `?w h` - reopens this panel.\n
-`?w reset` (or) `?w r` - resets your progress.\n
-`?w stats` (or) `?w st` - shows your statistics.\n
-`?w skip` (or) `?w s` - skips a champion.\n
-To ask for a hint, type `?w hint` (or) `?w d` while playing. But remember: each player can **only** asks for 3 hints.
+`?w play` (or) `?w p` - starts a game.\n`?w quit` (or) `?w q` - finishes a game.\n`?w help` (or) `?w h` - reopens this panel.\n`?w reset` (or) `?w r` - resets your progress.\n`?w stats` (or) `?w st` - shows your statistics.\n`?w skip` (or) `?w s` - skips a champion.\nTo ask for a hint, type `?w hint` (or) `?w d` while playing. But remember: each player can **only** asks for 3 hints.
