@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args) => {
     if(game){
         game.showHint();
     }
-    message.delete().catch((err) => console.log(err.message));
+    message.delete(0).catch((err) => console.log(err.message));
 }
 
 module.exports.config = {

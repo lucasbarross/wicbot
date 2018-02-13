@@ -4,8 +4,8 @@ module.exports.run = async (bot, message, args) => {
     let game = bot.games.get(message.author.id);
     if(game){
         bot.games.delete(message.author.id)
-        game.message.delete().catch(err => console.log(err.message));
-        message.delete().catch((err) => console.log(err.message));
+        game.message.delete(0).catch(err => console.log(err.message));
+        message.delete(0).catch((err) => console.log(err.message));
     }
 }
 
