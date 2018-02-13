@@ -14,9 +14,11 @@ router.post("/", function(req, res){
 
     if(user == config.client.uid && secret == config.client.secret){
         client.guilds.forEach((guild, i) => {
-            guild.defaultChannel.send(msg);
+            guild.defaultChannel.send(msg).catch((err) => console.log(err));
         })
     }
+
+    res.send("Sent.");
 })
 
 module.exports = router;
