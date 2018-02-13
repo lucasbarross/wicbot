@@ -11,14 +11,15 @@ router.post("/", function(req, res){
     let user = req.body['client_id'];
     let secret = req.body['secret'];
     let msg = req.body['message'];
+    let promises = [];
 
     if(user == config.client.uid && secret == config.client.secret){
         client.guilds.forEach((guild, i) => {
-            guild.defaultChannel.send(msg).catch((err) => console.log(err));
+            promises.push(guild.defaultChannel.send(msg).catch((err) => console.log(err)));
         })
     }
-
-    res.send("Sent.");
+    
+    Promise.all(promises).then(() => res.send("Sent."));
 })
 
 module.exports = router;
