@@ -39,7 +39,7 @@ module.exports = class Game {
         return Promise.all([api.getText("completeGameText", this.user.lang), api.getPlayerStats(this.user.id)]).spread((text, stats) => {
             //console.log(client.games)
             client.games.delete(this.user.id)
-            this.message.delete().catch((err) => console.log(err.message));
+            //this.message.delete().catch((err) => console.log(err.message));
             if(message){
                 return messenger.editChampionMessage(this.user, this.message, text.data.text.replace("%d", stats.data.total_tries));
             } else {
