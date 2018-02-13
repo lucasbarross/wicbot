@@ -8,7 +8,7 @@ client.on("ready", () => {
     client.user.setActivity(`on ${client.guilds.size} servers`);
     const dbl = new DBL(config.DBLTOKEN, client);
     axios
-    .post("https://discordapp.com/api/webhooks/413050143621906432/PpANNw9GHATvTMMQyNw6z2vhz2IS9DbNVcIgWPI-w7BoVhq9tq_Sq78g_LUIlvPZnYwy", 
+    .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, I'm ready!"
     })
@@ -18,7 +18,7 @@ client.on("guildCreate", (guild) => {
     console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     client.user.setActivity(`on ${client.guilds.size} servers`);
     axios
-    .post("https://discordapp.com/api/webhooks/413050143621906432/PpANNw9GHATvTMMQyNw6z2vhz2IS9DbNVcIgWPI-w7BoVhq9tq_Sq78g_LUIlvPZnYwy", 
+    .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, I joined the guild " + guild.name
     })
@@ -28,7 +28,7 @@ client.on("guildDelete", (guild) => {
     console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
     client.user.setActivity(`on ${client.guilds.size} servers`);
     axios
-    .post("https://discordapp.com/api/webhooks/413050143621906432/PpANNw9GHATvTMMQyNw6z2vhz2IS9DbNVcIgWPI-w7BoVhq9tq_Sq78g_LUIlvPZnYwy", 
+    .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, " + guild.name + " guild removed me! :("
     })
