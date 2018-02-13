@@ -7,7 +7,7 @@ function findCmd (alias){
         if(cmd){
             resolve(cmd)
         } else{
-            reject(new Error("Command not found"));
+            reject(new Error("Command not found ("+ alias +")"));
         }
     })
 }
