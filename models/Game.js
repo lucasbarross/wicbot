@@ -114,7 +114,7 @@ module.exports = class Game {
     
     registerAnswer(hunch){
         var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
-        hunch.delete(0).catch((err) => console.log(err));
+        hunch.delete(0).catch((err) => console.log(err.message));
         
         if (!this.guessEnabled){
             return;
