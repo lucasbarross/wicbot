@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "League of Legends' discord bot.",
   "main": "app.js",
-  "engines":{"node": "8.9.4"},
+  "engines": {
+    "node": "8.9.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +22,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
     "discord.js": "^11.2.1",
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
