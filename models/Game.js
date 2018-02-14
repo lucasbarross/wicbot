@@ -36,6 +36,7 @@ module.exports = class Game {
     }
 
     completeGame(message){
+        console.log(this.user.lang);
         return Promise.all([api.getText("completeGameText", this.user.lang), api.getPlayerStats(this.user.id, this.user.lang)]).spread((text, stats) => {
             //console.log(client.games)
             client.games.delete(this.user.id)
