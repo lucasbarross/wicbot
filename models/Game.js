@@ -125,7 +125,7 @@ module.exports = class Game {
         api.postAnswer(this.user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
             return messenger.feedbackMessage(this.channel, this.user, this.message, isCorrect)
         }).then((fbmsg) => {
-            return this.timeout(500);
+            return this.timeout(1000);
         }).then(() => {
             if(isCorrect){
                 this.championsAvailable.splice(this.currentIndex(), 1);
