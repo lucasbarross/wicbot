@@ -66,7 +66,7 @@ module.exports.postAnswer = async (userID, championID, correct, hinted) => {
 
 async function checkToken(){
     return new Promise((resolve, reject) => {
-        if(!authorization || ((authorization.created_at + authorization.expires_in) >= new Date().getTime())){
+        if(!authorization || ((authorization.created_at + authorization.expires_in) <= new Date().getTime())){
             getToken().then((response) => {
                 authorization = response.data
                 axios.defaults.headers.common['Authorization'] = "Bearer " + authorization.access_token;
