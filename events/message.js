@@ -18,9 +18,12 @@ client.on("message", (message) => {
     var prefix = content[0];
     var cmdAlias = content[1];
     var args = content.slice(1);
+    var game = client.games.get(message.author.id);
     if (prefix == config.prefix){
         findCmd(cmdAlias).then((cmd) => cmd.run(client, message, args)).catch((err) => console.log(err.message))
-    } else if (client.games.get(message.author.id)){
-        client.games.get(message.author.id).registerAnswer(message);
+    } else if (game){
+        if(game.channel == message.channel){
+            client.games.get(message.author.id).registerAnswer(message);
+        }
     }
 })

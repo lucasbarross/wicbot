@@ -36,7 +36,6 @@ module.exports = class Game {
     }
 
     completeGame(message){
-        console.log(this.user.lang);
         return Promise.all([api.getText("completeGameText", this.user.lang), api.getPlayerStats(this.user.id, this.user.lang)]).spread((text, stats) => {
             //console.log(client.games)
             client.games.delete(this.user.id)
@@ -58,7 +57,7 @@ module.exports = class Game {
             this.hinted = false;
             this.championsAvailable = response.data;
             this.currentChampion = this.getRandomChampion(this.championsAvailable);
-            messenger.championMessage(this.channel, this.user, this.currentChampion.representation).then((msg) => { this.message = msg }).catch(err => console.log(err.message)); 
+            messenger.championMessage(this.channel, this.user, this.currentChampion.representation).then((msg) => { this.message = msg }).catch(err => console.log("ERROR START, CHAMPION MESSAGE METHOD: " + err.message)); 
         }).catch((err) => console.log(err.message));      
     }
 
@@ -74,9 +73,9 @@ module.exports = class Game {
         if(this.championsAvailable.length > 0){
             this.currentChampion = champion;
             this.checkBard();
-            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log(err.message));  
+            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log("ERROR NEXT CHAMPION -> EDIT CHAMPION MESSAGE " +err.message));  
         } else {
-            this.completeGame(this.message).catch(err => console.log(err.message));
+            this.completeGame(this.message).catch(err => console.log("ERROR COMPLETE GAME METHOD: " + err.message));
         }
     }
 
@@ -99,7 +98,7 @@ module.exports = class Game {
         .then((msg) => { 
             this.message = msg             
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log("ERROR SHOW HINT -> HINT MESSAGE METHOD " + err.message));
     }
     
     timeout(ms){
@@ -115,7 +114,7 @@ module.exports = class Game {
     
     registerAnswer(hunch){
         var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
-        hunch.delete(0).catch((err) => console.log(err.message));
+        hunch.delete(0).catch((err) => console.log("ERROR DELETING HUNCH: "+ err.message));
         
         if (!this.guessEnabled){
             return;
@@ -135,6 +134,6 @@ module.exports = class Game {
                 this.guessEnabled = true;
                 return messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation)
             }
-        }).catch((err) => console.log(err.message));
+        }).catch((err) => console.log("ERROR POSTING ANSWER: " + err.message));
     }
 }
