@@ -6,7 +6,7 @@ const DBL = require("dblapi.js");
 client.on("ready", () => {
     console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
     client.user.setActivity(`?w help`);
-    //const dbl = new DBL(config.DBLTOKEN, client);
+    const dbl = new DBL(config.DBLTOKEN, client);
     axios
     .post(config.GUILD_WEBHOOK, 
     {
