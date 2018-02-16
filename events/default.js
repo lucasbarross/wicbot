@@ -6,12 +6,12 @@ const DBL = require("dblapi.js");
 client.on("ready", () => {
     console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
     client.user.setActivity(`?w help`);
-    const dbl = new DBL(config.DBLTOKEN, client);
+    //const dbl = new DBL(config.DBLTOKEN, client);
     axios
     .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, I'm ready!"
-    })
+    }).catch((err) => console.log("ERROR POSTING TO WEBHOOK"));
 });
     
 client.on("guildCreate", (guild) => {
@@ -20,7 +20,7 @@ client.on("guildCreate", (guild) => {
     .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, I joined the guild " + guild.name
-    })
+    }).catch((err) => console.log("ERROR POSTING TO WEBHOOK"));
 });
 
 client.on("guildDelete", (guild) => {
@@ -29,5 +29,5 @@ client.on("guildDelete", (guild) => {
     .post(config.GUILD_WEBHOOK, 
     {
         content: "Hey, " + guild.name + " guild removed me! :("
-    })
+    }).catch((err) => console.log("ERROR POSTING TO WEBHOOK"));
 });

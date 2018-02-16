@@ -58,7 +58,7 @@ module.exports.playerStatsMessage = async (channel, user) => {
             }
         });
     } catch(err){
-        console.log(err.message);
+        console.log("ERROR PLAYER STATS MESSAGE:" + err.message);
         throw err;
     }
 }
@@ -67,7 +67,6 @@ module.exports.helpMessage = async (channel, user) => {
     try{
         var title = await api.getText("helpTitle", user.lang);
         var body = await api.getText("helpText", user.lang);
-        console.log(body.data);
         return channel.send({embed: {
             color: colors.GOLD,
             title: title.data.text,
@@ -75,7 +74,7 @@ module.exports.helpMessage = async (channel, user) => {
          }
         });
     }catch(err){
-        console.log(err.message);
+        console.log("ERROR HELP MESSAGE: " + err.message);
         throw err;
     }
 }
@@ -99,7 +98,7 @@ module.exports.hintMessage = async (message, channel, user, championName) => {
         }}
         );
     } catch(err){
-        console.log(err.message);
+        console.log("ERROR HINT MESSAGE:" + err.message);
         throw err;
     }
 }
@@ -117,21 +116,16 @@ module.exports.editChampionMessage = async (user, message, nextRepresentation) =
 }
 
 module.exports.feedbackMessage = async (channel, user, message, correct) => {
-    try{
-        let query = correct ? "correct" : "incorrect"
-        let color = correct ? 3066993 : 15158332;
-        let file = correct ? "https://lh3.googleusercontent.com/a560R0P39R1myJnFH9RjnDwvcEHPSUHcrLf3q9fNiYyVIZbX4ylqJBw5SD6hfwZd1ySkEeXEZnBErtLKvUIiC4T0uYOsMbnzxJVey99MhHDIfak1mBJ5QlVBhQkJUd96GooN3_ZbJ6d39NjTyYvbNioNl8EmORKuVMtg0F-2BbVpWQU6O8PtWuH1Tpyx0BEWBP76o6YwVzHQtCru_0QwsrS9kZo4bJgbg_9VW_byXbKZlgNCqrGYzQpd6MusNrNHyhsIxEASXsLDEpuPxhEuV2JuIg8XDIDWXBHbK0jHlUWOrOgrRavd9RJpUx-38AT6uaU69X0sSs9K2dMk7LwcM4Y5v-8hDxKaijwan4bNvxBNcD-QKHXS2nIrBw7DTLxkznFCqfaGhfysdaVIKM1bzZ44wcQF9VWZxwF_KWCew3M8RLHWi0qZt9hw1lKp_2nkTAGiVULA9UvPnnzmeNYUVmf0ydfJq4zlCSbX8YeIQrI4LOmMyrPb2nvZvi5Ks0XxiYX9eddcupymvnmLvVvDzRN1h9-9XqjYLqeqGqsPOLNj8jFdR-ip_R4DxMZiA_jlx1tP-09GNBAFBLqntD3bEPCv73tadTyMVnRtxEJdcf4Xh4lkpi869onfHe8CU9WzDt6FSTZPQOls9Jd23EflYqgULN-3CYQ=s80-no" : "https://lh3.googleusercontent.com/f_bNe2vqjfIjIGnV4nsnqYKviQptWTdneO4ZhNEOyiMCAF6aiVKw-NJrrGdyyhxjbJ5Qac4JHYtoHU43tojYkhM7zdFzJ_wd2KnvFWhRRQoTh2RMYoWbOGzvJerlqj39CsyRZ67kCmXzTs9LeuDqcnhWT1bOW-5ukWLPoxFERneJPT2aJWj-NoQ08FrdN3k28EMNbTfYWF8vGid8eaRfrneEW6MTTXegoBOR8hmTjQomN3KaCYroejgoNbml5rxGFEx8GsqGd6Tc4_7LM6tRwIgOITUFgSthJkc1l8KDVBfbwGXnRbCOHSNqqRda-JEvi1aG1wrMXovcvtrnsaJiWivyUfK0D2rX5bPyQqjvO8y64-umtH9kAH0FzYs8N37fuyi_ZyQWoDQ0iookSlxrwDrmDWwjkHlnNG0Ges_kblrQyT9CnhL1Q5N5kJaKFSmKgMp5XuURNiBKUQ4FOoNslxpcqjM6UZPcHdpya3m_CEficQatjmPxjN4qdIqc75xMBj_0sPo5yDBs8Qge3Rwalhk_gT19jUZIUzF1KDbfgdWjp2aHebIxtnwGUvSlZiYuKND8b2uxfxFg3Etz75TKJ8myPdwqCZlVVpIOhQ=s80-no";
-        return message.edit(user.toString(), {embed: {
-            color: color,
-            author: {
-                name: user.username,
-                icon_url: user.avatarURL
-            },
-            image: { url: file }
-        }
-        });
-    }catch(err){
-        console.log(err.message);
-        return Promise.reject(err);
+    let query = correct ? "correct" : "incorrect"
+    let color = correct ? 3066993 : 15158332;
+    let file = correct ? "https://lh3.googleusercontent.com/a560R0P39R1myJnFH9RjnDwvcEHPSUHcrLf3q9fNiYyVIZbX4ylqJBw5SD6hfwZd1ySkEeXEZnBErtLKvUIiC4T0uYOsMbnzxJVey99MhHDIfak1mBJ5QlVBhQkJUd96GooN3_ZbJ6d39NjTyYvbNioNl8EmORKuVMtg0F-2BbVpWQU6O8PtWuH1Tpyx0BEWBP76o6YwVzHQtCru_0QwsrS9kZo4bJgbg_9VW_byXbKZlgNCqrGYzQpd6MusNrNHyhsIxEASXsLDEpuPxhEuV2JuIg8XDIDWXBHbK0jHlUWOrOgrRavd9RJpUx-38AT6uaU69X0sSs9K2dMk7LwcM4Y5v-8hDxKaijwan4bNvxBNcD-QKHXS2nIrBw7DTLxkznFCqfaGhfysdaVIKM1bzZ44wcQF9VWZxwF_KWCew3M8RLHWi0qZt9hw1lKp_2nkTAGiVULA9UvPnnzmeNYUVmf0ydfJq4zlCSbX8YeIQrI4LOmMyrPb2nvZvi5Ks0XxiYX9eddcupymvnmLvVvDzRN1h9-9XqjYLqeqGqsPOLNj8jFdR-ip_R4DxMZiA_jlx1tP-09GNBAFBLqntD3bEPCv73tadTyMVnRtxEJdcf4Xh4lkpi869onfHe8CU9WzDt6FSTZPQOls9Jd23EflYqgULN-3CYQ=s80-no" : "https://lh3.googleusercontent.com/f_bNe2vqjfIjIGnV4nsnqYKviQptWTdneO4ZhNEOyiMCAF6aiVKw-NJrrGdyyhxjbJ5Qac4JHYtoHU43tojYkhM7zdFzJ_wd2KnvFWhRRQoTh2RMYoWbOGzvJerlqj39CsyRZ67kCmXzTs9LeuDqcnhWT1bOW-5ukWLPoxFERneJPT2aJWj-NoQ08FrdN3k28EMNbTfYWF8vGid8eaRfrneEW6MTTXegoBOR8hmTjQomN3KaCYroejgoNbml5rxGFEx8GsqGd6Tc4_7LM6tRwIgOITUFgSthJkc1l8KDVBfbwGXnRbCOHSNqqRda-JEvi1aG1wrMXovcvtrnsaJiWivyUfK0D2rX5bPyQqjvO8y64-umtH9kAH0FzYs8N37fuyi_ZyQWoDQ0iookSlxrwDrmDWwjkHlnNG0Ges_kblrQyT9CnhL1Q5N5kJaKFSmKgMp5XuURNiBKUQ4FOoNslxpcqjM6UZPcHdpya3m_CEficQatjmPxjN4qdIqc75xMBj_0sPo5yDBs8Qge3Rwalhk_gT19jUZIUzF1KDbfgdWjp2aHebIxtnwGUvSlZiYuKND8b2uxfxFg3Etz75TKJ8myPdwqCZlVVpIOhQ=s80-no";
+    return message.edit(user.toString(), {embed: {
+        color: color,
+        author: {
+            name: user.username,
+            icon_url: user.avatarURL
+        },
+        image: { url: file }
     }
+    });
 }
