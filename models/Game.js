@@ -52,6 +52,7 @@ module.exports = class Game {
                 return this.completeGame(null);
             }
             client.games.set(this.user.id, this);
+            console.log(client.games);
             this.hinted = false;
             this.championsAvailable = response.data;
             this.currentChampion = this.getRandomChampion(this.championsAvailable);
