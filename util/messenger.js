@@ -118,7 +118,7 @@ module.exports.editChampionMessage = async (user, message, nextRepresentation) =
 module.exports.feedbackMessage = async (channel, user, message, correct) => {
     let query = correct ? "correct" : "incorrect"
     let color = correct ? 3066993 : 15158332;
-    let file = correct ? "https://imgur.com/AHUmdp2" : "https://imgur.com/e6D8hho";
+    let file = correct ? "https://i.imgur.com/AHUmdp2.png" : "https://i.imgur.com/e6D8hho.png";
     return message.edit(user.toString(), {embed: {
         color: color,
         author: {
