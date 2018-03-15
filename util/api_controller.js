@@ -71,7 +71,7 @@ async function checkToken(){
                 this.authorization = response.data
                 axios.defaults.headers.common['Authorization'] = "Bearer " + this.authorization.access_token;
                 resolve();
-            }).catch((err) => reject(new Error("Couldn't get authorization token.")))
+            }).catch((err) => reject(new Error("Couldn't get authorization token: " + err.message)))
         } else {
             console.log("auth already good");
             resolve();
