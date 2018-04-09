@@ -22,7 +22,7 @@ fs.readdir("./commands/")
 .catch((err) => { console.log(err) })
 //
 
-client.login(config.token).then((bot) => purgeCron(bot)).catch((err) => console.log(err));
+client.login(config.token).then((bot) => purgeCron(client)).catch((err) => console.log(err));
 
 module.exports = client;
 
