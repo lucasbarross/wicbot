@@ -1,4 +1,4 @@
-var purgeCron = require("./lib/purgeGames");
+var purgeCron = require("./lib/purgeGames/timer");
 
 module.exports = { 
     purgeCron 
