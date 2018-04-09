@@ -2,6 +2,7 @@ var api = require("../util/api_controller");
 var messenger = require("../util/messenger");
 var client = require("../server");
 var Promise = require("bluebird");
+var moment = require ("moment");
 
 module.exports = class Game {
     
@@ -23,6 +24,7 @@ module.exports = class Game {
         this.guild = message.guild;
         this.user = message.author;
         this.guessEnabled = true;
+        this.created_at = moment.now();
         if(this.guild.region == "brazil"){
             this.user.lang = "br";
         } else {

@@ -2,6 +2,7 @@ var webapp = require('./config/express'),
     Discord = require('discord.js'),
     config = require("./config/constants.js"),
     fs = require("fs-extra"),
+    purgeCron = require("./modules/schedules").purgeCron;
     client = new Discord.Client();
 
 client.games = new Discord.Collection();
@@ -21,7 +22,7 @@ fs.readdir("./commands/")
 .catch((err) => { console.log(err) })
 //
 
-client.login(config.token).catch((err) => console.log(err));
+client.login(config.token).then((bot) => purgeCron(bot)).catch((err) => console.log(err));
 
 module.exports = client;
 
