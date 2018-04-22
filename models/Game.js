@@ -19,7 +19,8 @@ module.exports = class Game {
     * @param hunch // message player sent to try guessing
     */
 
-    constructor(message) {
+    constructor(message, loadingMsg) {
+        this.message = loadingMsg;
         this.channel = message.channel;
         this.guild = message.guild;
         this.user = message.author;
@@ -39,7 +40,7 @@ module.exports = class Game {
 
     completeGame(message){
         return Promise.all([api.getText("completeGameText", this.user.lang), api.getPlayerStats(this.user.id, this.user.lang)]).spread((text, stats) => {
-            client.games.delete(this.user.id)
+            client.games.delete(this.user.id);
             if(message){
                 return messenger.editChampionMessage(this.user, this.message, text.data.text.replace("%d", stats.data.total_tries));
             } else {
@@ -51,14 +52,15 @@ module.exports = class Game {
     start() {
         api.getChampions(this.user.id).then((response) => {
             if(response.data.length <= 0){
-                return this.completeGame(null);
+                return this.completeGame(this.message);
             }
             client.games.set(this.user.id, this);
             console.log(client.games);
             this.hinted = false;
             this.championsAvailable = response.data;
             this.currentChampion = this.getRandomChampion(this.championsAvailable);
-            messenger.championMessage(this.channel, this.user, this.currentChampion.representation).then((msg) => { this.message = msg }).catch(err => console.log("ERROR START, CHAMPION MESSAGE METHOD: " + err.message)); 
+            this.checkBard();
+            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch(err => console.log("ERROR START, CHAMPION MESSAGE METHOD: " + err.message)); 
         }).catch((err) => console.log("START ERROR: " + err.message));      
     }
 

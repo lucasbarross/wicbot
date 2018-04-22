@@ -129,3 +129,17 @@ module.exports.feedbackMessage = async (channel, user, message, correct) => {
     }
     });
 }
+
+module.exports.loadingMessage = async (channel, user) => {
+    return channel.send({
+        embed: 
+        {
+            color: colors.DARKER_GREY,
+            author: {
+                name: user.username,
+                icon_url: user.avatarURL
+            },
+            description: "Loading..."
+        }
+    })
+}
