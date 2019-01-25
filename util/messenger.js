@@ -67,6 +67,10 @@ module.exports.helpMessage = async (channel, user) => {
     try{
         var title = await api.getText("helpTitle", user.lang);
         var body = await api.getText("helpText", user.lang);
+
+        console.log(title.data);
+        console.log(body);
+        
         return channel.send({embed: {
             color: colors.GOLD,
             title: title.data.text,
