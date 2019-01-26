@@ -59,8 +59,7 @@ module.exports = class Game {
         client.games.set(this.user.id, this);
 
         console.log("CREATED A GAME INSTANCE");
-        console.log("COLLECTION.GAMES:");
-        console.log(bot.games);
+        console.log("COLLECTION.GAMES:", bot.games.size);
 
         this.championsAvailable = response.data;
        
