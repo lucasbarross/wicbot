@@ -63,7 +63,7 @@ module.exports = class Game {
 
         this.championsAvailable = response.data;
        
-        await this.nextChampion(this.getRandomChampion(this.championsAvailable));
+        await this.nextChampion();
     }
 
     checkBard(){
@@ -72,10 +72,12 @@ module.exports = class Game {
         }
     }
 
-    async nextChampion(champion){
+    async nextChampion(){
+        const champion = this.getRandomChampion(this.championsAvailable)
+        
         this.guessEnabled = true;
         this.hinted = false;
-    
+
         if(this.championsAvailable.length > 0){
             this.currentChampion = champion;
             this.checkBard();
@@ -134,7 +136,7 @@ module.exports = class Game {
 
         if(isCorrect){
             this.championsAvailable.splice(this.currentIndex(), 1);
-            return this.nextChampion(this.getRandomChampion(this.championsAvailable)).catch((err) => console.log("ERROR REGISTER ANSWER -> NEXT CHAMPION " + err));
+            return this.nextChampion().catch((err) => console.log("ERROR REGISTER ANSWER -> NEXT CHAMPION " + err));
         } else {
             this.guessEnabled = true;
             return messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log("ERROR REGISTER ANSWER -> EDIT CHAMPION MESSAGE " + err));
