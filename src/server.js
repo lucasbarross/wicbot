@@ -9,7 +9,7 @@ client.games = new Discord.Collection();
 
 //SETUP COMMANDS
 client.commands = new Discord.Collection();
-fs.readdir("./commands/")
+fs.readdir("./src/commands/")
 .then((files) => {
     var jsfiles = files.filter(f => f.split(".").pop() == 'js'); 
     jsfiles.forEach((file, i) => {

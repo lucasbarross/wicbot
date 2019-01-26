@@ -49,19 +49,22 @@ module.exports = class Game {
         })
     }
 
-    start() {
-        api.getChampions(this.user.id).then((response) => {
-            if(response.data.length <= 0){
-                return this.completeGame(this.message);
-            }
-            client.games.set(this.user.id, this);
-            console.log(client.games);
-            this.hinted = false;
-            this.championsAvailable = response.data;
-            this.currentChampion = this.getRandomChampion(this.championsAvailable);
-            this.checkBard();
-            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch(err => console.log("ERROR START, CHAMPION MESSAGE METHOD: " + err.message)); 
-        }).catch((err) => console.log("START ERROR: " + err.message));      
+    async start(bot) {
+        const response = await api.getChampions(this.user.id);
+        
+        if(response.data.length <= 0){
+            return this.completeGame(this.message);
+        }
+
+        client.games.set(this.user.id, this);
+
+        console.log("CREATED A GAME INSTANCE");
+        console.log("COLLECTION.GAMES:");
+        console.log(bot.games);
+
+        this.championsAvailable = response.data;
+       
+        await this.nextChampion(this.getRandomChampion(this.championsAvailable));
     }
 
     checkBard(){
@@ -70,15 +73,16 @@ module.exports = class Game {
         }
     }
 
-    nextChampion(champion){
+    async nextChampion(champion){
         this.guessEnabled = true;
         this.hinted = false;
+    
         if(this.championsAvailable.length > 0){
             this.currentChampion = champion;
             this.checkBard();
-            messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log("ERROR NEXT CHAMPION -> EDIT CHAMPION MESSAGE " +err.message));  
+            await messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation);  
         } else {
-            this.completeGame(this.message).catch(err => console.log("ERROR COMPLETE GAME METHOD: " + err.message));
+            await this.completeGame(this.message);
         }
     }
 
@@ -95,13 +99,10 @@ module.exports = class Game {
         this.nextChampion(champion);
     }
 
-    showHint(){
+    async showHint(){
         this.hinted = true;
-        messenger.hintMessage(this.message, this.channel, this.user, this.currentChampion.name)
-        .then((msg) => { 
-            this.message = msg             
-        })
-        .catch((err) => console.log("ERROR SHOW HINT -> HINT MESSAGE METHOD " + err.message));
+        const msg = await messenger.hintMessage(this.message, this.channel, this.user, this.currentChampion.name);
+        this.message = msg;
     }
     
     timeout(ms){
@@ -115,28 +116,29 @@ module.exports = class Game {
         return index;
     }
     
-    registerAnswer(hunch){
+    async registerAnswer(hunch){
         var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
-        hunch.delete(0).catch((err) => console.log("ERROR DELETING HUNCH: "+ err.message));
         
-        if (!this.guessEnabled){
-            return;
+        try {
+            await hunch.delete(0);
+        } catch (err) {
+            console.log("ERROR DELETING HUNCH:", err);
         }
+        
+        if (!this.guessEnabled) return;
 
         this.guessEnabled = false;
         
-        api.postAnswer(this.user.id, this.currentChampion.id, isCorrect, this.hinted).then((response) => { 
-            return messenger.feedbackMessage(this.channel, this.user, this.message, isCorrect)
-        }).then((fbmsg) => {
-            return this.timeout(1000);
-        }).then(() => {
-            if(isCorrect){
-                this.championsAvailable.splice(this.currentIndex(), 1);
-                return this.nextChampion(this.getRandomChampion(this.championsAvailable))
-            } else {
-                this.guessEnabled = true;
-                return messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation)
-            }
-        }).catch((err) => console.log("ERROR POSTING ANSWER: " + err.message));
+        await api.postAnswer(this.user.id, this.currentChampion.id, isCorrect, this.hinted);
+        await messenger.feedbackMessage(this.channel, this.user, this.message, isCorrect);
+        await this.timeout(1000);
+
+        if(isCorrect){
+            this.championsAvailable.splice(this.currentIndex(), 1);
+            return this.nextChampion(this.getRandomChampion(this.championsAvailable)).catch((err) => console.log("ERROR REGISTER ANSWER -> NEXT CHAMPION " + err));
+        } else {
+            this.guessEnabled = true;
+            return messenger.editChampionMessage(this.user, this.message, this.currentChampion.representation).catch((err) => console.log("ERROR REGISTER ANSWER -> EDIT CHAMPION MESSAGE " + err));
+        }
     }
 }

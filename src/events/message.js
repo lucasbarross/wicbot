@@ -1,15 +1,14 @@
 var client = require("../server.js");
 var config = require("../config/constants.js");
 
-function findCmd (alias){
-    return new Promise((resolve, reject) => {
-        var cmd = client.commands.get(alias)
-        if(cmd){
-            resolve(cmd)
-        } else{
-            reject(new Error("Command not found ("+ alias +")"));
-        }
-    })
+function runCmd (alias, message, args){
+    const cmd = client.commands.get(alias);
+
+    if(cmd) {
+        cmd.run(client, message, args);
+    } else {
+        console.log("Command not found", alias);
+    }
 }
 
 client.on("message", (message) => {
@@ -20,10 +19,10 @@ client.on("message", (message) => {
     var args = content.slice(1);
     var game = client.games.get(message.author.id);
     if (prefix == config.prefix){
-        findCmd(cmdAlias).then((cmd) => cmd.run(client, message, args)).catch((err) => console.log(err.message))
+        runCmd(cmdAlias, message, args);
     } else if (game){
         if(game.channel == message.channel){
-            client.games.get(message.author.id).registerAnswer(message);
+            client.games.get(message.author.id).registerAnswer(message).catch((err) => console.log("ERROR REGISTERING ANSWER", err));
         }
     }
 })
