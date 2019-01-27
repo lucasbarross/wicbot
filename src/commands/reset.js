@@ -5,15 +5,15 @@ var Promise = require("bluebird");
 var api = require("../util/api_controller")
 
 module.exports.run = async (bot, message, args) => {
-    let lang = message.guild.region == "brazil" ? "br" : "us"
-    api.resetStats(message.author.id)
-    .then((res) => {
-        return api.getText("resetText", lang)
-    })
-    .then((line) => { 
-        return message.channel.send(message.author.toString() + ', ' + line.data.text)
-    })
-    .catch((err) => console.log(err.message));
+    try {
+        let lang = message.guild.region == "brazil" ? "br" : "us"
+        await api.resetStats(message.author.id);
+        const line = await api.getText("resetText", lang);
+        await message.channel.send(message.author.toString() + ', ' + line.data.text)
+    } catch (err) {
+        console.log( "Error while resetting stats", err);
+    }
+
 }
 
 module.exports.config = {
