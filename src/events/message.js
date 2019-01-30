@@ -18,6 +18,8 @@ client.on("message", (message) => {
     var cmdAlias = content[1];
     var args = content.slice(1);
     var game = client.games.get(message.author.id);
+    message.author.lang = message.guild.region == "brazil" ? "br" : "us";
+    
     if (prefix == config.prefix){
         runCmd(cmdAlias, message, args);
     } else if (game){

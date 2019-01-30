@@ -21,10 +21,19 @@ module.exports.resetStats = async (userID) => {
     }
 }
 
+module.exports.getRank = async () => {
+    try{
+        await checkToken();
+        return axios.get(`/api/v1/rank`);  
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
+
 module.exports.getPlayerStats = async (userID, lang) => {
     try{
         await checkToken();
-        return axios.get(`/api/v1/status?user_id=${userID}&lang=${lang}`); 
+        return axios.get(`/api/v1/status?user_id=${userID}`); 
     } catch (err) {
         return Promise.reject(err);
     }

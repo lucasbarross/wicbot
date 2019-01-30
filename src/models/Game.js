@@ -19,18 +19,12 @@ module.exports = class Game {
     * @param hunch // message player sent to try guessing
     */
 
-    constructor(message, loadingMsg) {
-        this.message = loadingMsg;
+    constructor(message) {
         this.channel = message.channel;
         this.guild = message.guild;
         this.user = message.author;
         this.guessEnabled = true;
         this.created_at = moment.now();
-        if(this.guild.region == "brazil"){
-            this.user.lang = "br";
-        } else {
-            this.user.lang = "us";
-        }
     }
 
     getRandomChampion(champions){
@@ -39,8 +33,10 @@ module.exports = class Game {
     }
 
     completeGame(message){
+        
+        client.games.delete(this.user.id);
+
         return Promise.all([api.getText("completeGameText", this.user.lang), api.getPlayerStats(this.user.id, this.user.lang)]).spread((text, stats) => {
-            client.games.delete(this.user.id);
             if(message){
                 return messenger.editChampionMessage(this.user, this.message, text.data.text.replace("%d", stats.data.total_tries));
             } else {
@@ -50,6 +46,15 @@ module.exports = class Game {
     }
 
     async start(bot) {
+        const statusRes = await api.getPlayerStats(this.user.id, this.user.lang);
+        
+        //Caso o usuário tenha 0 respostas corretas e logo provavelmente é novo no jogo, mostrar a mensagem de começo
+        if(statusRes.data.status.count == 0) {
+            await messenger.startMessage(this.channel, this.user);
+        }
+
+        this.message = await messenger.loadingMessage(this.channel, this.user);
+
         const response = await api.getChampions(this.user.id);
         
         if(response.data.length <= 0){
@@ -101,8 +106,10 @@ module.exports = class Game {
     }
 
     async showHint(){
-        this.hinted = true;
-        const msg = await messenger.hintMessage(this.message, this.channel, this.user, this.currentChampion.name);
+        var hintRes = await api.getHint(this.user.id, this.currentChampion.name+"Text", this.user.lang);
+        this.hinted = hintRes.data.hint;
+        console.log(hintRes.data);
+        const msg = await messenger.hintMessage(this.message, this.channel, this.user, hintRes.data.message.text);
         this.message = msg;
     }
     

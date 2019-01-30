@@ -6,7 +6,7 @@ var api = require("../util/api_controller")
 
 module.exports.run = async (bot, message, args) => {
     try {
-        let lang = message.guild.region == "brazil" ? "br" : "us"
+        let lang = message.author.lang;
         let line;
         
         if(!bot.games.get(message.author.id)) {

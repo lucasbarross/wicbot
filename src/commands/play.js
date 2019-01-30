@@ -10,8 +10,7 @@ module.exports.run = async (bot, message, args) => {
         } catch (err) {
             console.log("ERROR DELETING ?w p MESSAGE " + err.message);
         } finally {
-            let loadingMsg = await messenger.loadingMessage(message.channel, message.author);
-            let game = new Game(message, loadingMsg);
+            let game = new Game(message);
             game.start(bot).catch(err => console.log("ERROR STARTING GAME", err));
         }
     }

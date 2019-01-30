@@ -84,9 +84,8 @@ module.exports.helpMessage = async (channel, user) => {
 }
 
 
-module.exports.hintMessage = async (message, channel, user, championName) => {
+module.exports.hintMessage = async (message, channel, user, hintMessage) => {
     try{
-        var hint = await api.getHint(user.id, championName+"Text", user.lang);
         var title = await api.getText("hintTitle", user.lang);
         return message.edit({embed: {
             color: colors.GREY,
@@ -97,7 +96,7 @@ module.exports.hintMessage = async (message, channel, user, championName) => {
             description: message.embeds[0].description,
             fields: [{
                 name: title.data.text,
-                value: hint.data.text
+                value: hintMessage
             }]
         }}
         );
@@ -146,4 +145,32 @@ module.exports.loadingMessage = async (channel, user) => {
             description: "Loading..."
         }
     })
+}
+
+module.exports.rankMessage = async (channel, userDiscordInfo, userStatsInfo, lang) => {
+    let rankText = await api.getText("rankText", lang);
+    rankText = rankText.data.text.replace('{player_name}', userDiscordInfo.username).replace('{hits}', userStatsInfo.total_tries);
+    return channel.send({
+        embed: 
+        {
+            color: colors.BLUE,
+            author: {
+                name: userDiscordInfo.username,
+                icon_url: `https://cdn.discordapp.com/avatars/${userDiscordInfo.id}/${userDiscordInfo.avatar}`
+            },
+            description: rankText
+        }
+    });
+}
+
+module.exports.startMessage = async (channel, user) => {
+    let startText = await api.getText("welcomeText", user.lang);
+    startText = startText.data.text;
+    return channel.send({
+        embed: 
+        {
+            color: colors.DARK_ORANGE,
+            description: startText
+        }
+    });
 }
