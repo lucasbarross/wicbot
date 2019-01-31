@@ -31,3 +31,7 @@ client.on("guildDelete", (guild) => {
         content: "Hey, " + guild.name + " guild removed me! :("
     }).catch((err) => console.log("ERROR POSTING TO WEBHOOK"));
 });
+
+client.on("error", (error) => {
+    console.error("ERROR EVENT", error);
+})
