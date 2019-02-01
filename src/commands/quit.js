@@ -10,6 +10,6 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.config = {
-    aliases: ["q", "quit", "sair"],
+    aliases: ["q", "quit", "sair", "stop"],
     description: "Delete a game instance."
 }
