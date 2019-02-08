@@ -1,10 +1,10 @@
-var Game = require("../models/Game.js");
+var gameController = require("../controllers/game");
 
 module.exports.run = async (bot, message, args) => {
-    let game = bot.games.get(message.author.id);
+    const gameState = bot.games.get(message.author.id);
     
-    if(game){
-        game.showHint().catch((err) => console.log("ERROR SHOW HINT -> HINT MESSAGE METHOD", err.message));
+    if(gameState){
+        gameController.showHint(gameState).catch((err) => console.log("ERROR SHOW HINT -> HINT MESSAGE METHOD", err.message));
     }
 
     message.delete(0).catch((err) => console.log("ERROR DELETING ?w d MESSAGE", err));

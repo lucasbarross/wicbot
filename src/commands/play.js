@@ -1,5 +1,4 @@
-var Game = require("../models/Game.js");
-var messenger = require("../util/messenger");
+const gameController = require("../controllers/game");
 
 module.exports.run = async (bot, message, args) => {
     if(bot.games.get(message.author.id)){
@@ -10,8 +9,8 @@ module.exports.run = async (bot, message, args) => {
         } catch (err) {
             console.log("ERROR DELETING ?w p MESSAGE " + err.message);
         } finally {
-            let game = new Game(message);
-            game.start(bot).catch(err => console.log("ERROR STARTING GAME", err));
+            const gameState = { channel: message.channel, user: message.author };
+            gameController.start(bot, gameState);
         }
     }
 }

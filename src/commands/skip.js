@@ -1,10 +1,12 @@
-var Game = require("../models/Game.js");
+var gameController = require("../controllers/game");
 
 module.exports.run = async (bot, message, args) => {
-    let game = bot.games.get(message.author.id);
-    if(game){
-        game.skipChampion();
+    const gameState = bot.games.get(message.author.id);
+    
+    if(gameState){
+        gameController.skipChampion(gameState);
     }
+    
     message.delete(0).catch((err) => console.log(err.message));
 }
 

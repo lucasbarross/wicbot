@@ -30,7 +30,7 @@ module.exports.getRank = async () => {
     }
 }
 
-module.exports.getPlayerStats = async (userID, lang) => {
+module.exports.getPlayerStats = async (userID) => {
     try{
         await checkToken();
         return axios.get(`/api/v1/status?user_id=${userID}`); 
@@ -67,6 +67,16 @@ module.exports.postAnswer = async (userID, championID, correct, hinted) => {
             correct: correct,
             hinted: hinted
         });
+    } catch(err){
+        return Promise.reject(err);
+    }
+}
+
+module.exports.getRandomChampion = async (userID, excludeChampionId) => {
+    try{
+        await checkToken();
+        if(excludeChampionId) return axios.get(`/api/v2/champions?user_id=${userID}&exclude=${excludeChampionId}`);
+        else return axios.get(`/api/v2/champions?user_id=${userID}`);
     } catch(err){
         return Promise.reject(err);
     }
