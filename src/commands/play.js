@@ -1,4 +1,5 @@
 const gameController = require("../controllers/game");
+const moment = require ("moment");
 
 module.exports.run = async (bot, message, args) => {
     if(bot.games.get(message.author.id)){
@@ -9,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
         } catch (err) {
             console.log("ERROR DELETING ?w p MESSAGE " + err.message);
         } finally {
-            const gameState = { channel: message.channel, user: message.author };
+            const gameState = { channel: message.channel, user: message.author, created_at: moment.now() };
             gameController.start(bot, gameState);
         }
     }
