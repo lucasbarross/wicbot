@@ -3,4 +3,5 @@ var axios = require("axios");
 setInterval(() => {
     console.log("Ping");
     axios.get(config.BOT_URL).catch((err) => console.log(err.message));
+    axios.get(config.API_URL).catch((err) => console.log(err.message));
 }, 280000);
