@@ -55,7 +55,7 @@ module.exports = class Game {
   }
 
   async start(bot) {
-    const statusRes = await api.getPlayerStats(this.user.id, this.user.lang);
+    const statusRes = await api.getPlayerStats(this.user.id);
 
     //Caso o usuário tenha 0 respostas corretas e logo provavelmente é novo no jogo, mostrar a mensagem de começo
     if (statusRes.data.status.count == 0) {
