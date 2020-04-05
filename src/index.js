@@ -1,4 +1,5 @@
 require("./config/express");
+require("./util/ping");
 
 const config = require("./config/constants.js");
 
