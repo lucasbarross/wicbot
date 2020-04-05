@@ -1,7 +1,9 @@
-var Discord = require("discord.js"),
+const Discord = require("discord.js"),
   config = require("./config/constants.js"),
   fs = require("fs-extra"),
-  purgeCron = require("./modules/schedules").purgeCron;
+  purgeCron = require("./modules/schedules").purgeCron,
+  setupDefaultEvents = require("./events/default"),
+  setupMessageEvents = require("./events/message");
 
 client = new Discord.Client();
 
@@ -26,10 +28,12 @@ fs.readdir("./src/commands/")
 
 client
   .login(config.token)
-  .then((bot) => purgeCron(client))
+  .then((bot) => {
+    purgeCron(client);
+  })
   .catch((err) => console.log(err));
 
-module.exports = client;
+setupDefaultEvents(client);
+setupMessageEvents(client);
 
-require("./events/default");
-require("./events/message");
+module.exports = client;
