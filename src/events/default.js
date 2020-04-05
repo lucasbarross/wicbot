@@ -9,7 +9,7 @@ client.on("ready", () => {
   );
 
   setInterval(() => {
-    DBL.postStats(client.guilds.size, client.shards.Id, client.shards.total);
+    DBL.postStats(client.guilds.size, client.shard.id, client.shards.total);
   }, 1800000);
 
   client.user.setActivity(`?w help`);
