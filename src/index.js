@@ -10,5 +10,7 @@ const manager = new ShardingManager("./src/bot.js", {
   totalShards: 2,
 });
 
-manager.spawn().catch((err) => console.log(err));
-manager.on("launch", (shard) => console.log(`Launched shard ${shard.id}`));
+manager.spawn().catch((err) => console.log("error spawning shard", err));
+manager.on("launch", (shard) =>
+  console.log(`Launched shard ${shard.id}`, shard)
+);
