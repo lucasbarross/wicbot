@@ -1,5 +1,4 @@
-var webapp = require("./config/express"),
-  Discord = require("discord.js"),
+var Discord = require("discord.js"),
   config = require("./config/constants.js"),
   fs = require("fs-extra"),
   purgeCron = require("./modules/schedules").purgeCron;

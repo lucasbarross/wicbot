@@ -1,3 +1,5 @@
+require("./config/express");
+
 const config = require("./config/constants.js");
 
 const { ShardingManager } = require("discord.js");
