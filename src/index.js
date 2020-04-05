@@ -9,5 +9,5 @@ const manager = new ShardingManager("./src/bot.js", {
   token: config.token,
 });
 
-manager.spawn(2);
+manager.spawn();
 manager.on("launch", (shard) => console.log(`Launched shard ${shard.id}`));
