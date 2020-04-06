@@ -8,8 +8,10 @@ module.exports = function (client) {
       `Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`
     );
 
+    const dbl = new DBL(config.DBLTOKEN, client);
+
     setInterval(() => {
-      DBL.postStats(client.guilds.size, client.shard.id, client.shards.total);
+      dbl.postStats(client.guilds.size, client.shard.id, client.shard.total);
     }, 1800000);
 
     client.user.setActivity(`?w help`);
