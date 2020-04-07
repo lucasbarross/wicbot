@@ -4,7 +4,7 @@
   "description": "League of Legends' discord bot.",
   "main": "app.js",
   "engines": {
-    "node": "8.9.4"
+    "node": "12.16.x"
   },
   "scripts": {
     "start": "pm2-runtime start src/index.js",
