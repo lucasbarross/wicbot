@@ -7,7 +7,6 @@ const { ShardingManager } = require("discord.js");
 
 const manager = new ShardingManager("./src/bot.js", {
   token: config.token,
-  totalShards: 2,
 });
 
 manager.spawn().catch((err) => console.log("error spawning shard", err));

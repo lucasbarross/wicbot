@@ -5,7 +5,7 @@ const DBL = require("dblapi.js");
 module.exports = function (client) {
   client.on("ready", () => {
     console.log(
-      `Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`
+      `Bot has started, with ${client.users.cache.size} users, in ${client.channels.cache.size} channels of ${client.guilds.cache.size} guilds.`
     );
 
     const dbl = new DBL(config.DBLTOKEN, client);

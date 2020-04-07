@@ -155,7 +155,7 @@ module.exports = class Game {
     var isCorrect = hunch.content.toLowerCase() == this.currentChampion.name;
 
     try {
-      await hunch.delete(0);
+      await hunch.delete({ timeout: 0 });
     } catch (err) {
       console.log("ERROR DELETING HUNCH:", err);
     }
